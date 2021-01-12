@@ -1,7 +1,8 @@
-package info.diwe.productlist
+package info.diwe.productlist.controller
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import info.diwe.productlist.R
 
 class MainActivity : AppCompatActivity() {
 
