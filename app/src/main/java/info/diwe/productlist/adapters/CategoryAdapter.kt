@@ -17,18 +17,32 @@ class CategoryAdapter(context: Context, categories: List<Category>): BaseAdapter
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val categoryView: View
+        val holder : ViewHolder
 
-        categoryView = LayoutInflater.from(context).inflate(R.layout.category_list_item, null)
-        val categoryImage : ImageView = categoryView.findViewById(R.id.categoryImage)
-        val categoryName : TextView = categoryView.findViewById(R.id.categoryName)
+        if (convertView == null) {
+            // if first time shown
+            categoryView = LayoutInflater.from(context).inflate(R.layout.category_list_item, null)
+
+            holder = ViewHolder()
+            holder.categoryImage = categoryView.findViewById(R.id.categoryImage)
+            holder.categoryName = categoryView.findViewById(R.id.categoryName)
+            println("CategoryAdapter: I exist for the first time")
+
+            categoryView.tag = holder
+        } else {
+            // reuse view and cells
+            holder = convertView.tag as ViewHolder
+            categoryView = convertView
+            println("CategoryAdapter: Go green, recycle !")
+        }
+
 
         val category = categories[position]
 
         val resourceId = context.resources.getIdentifier(category.image, "drawable", context.packageName)
 
-        categoryName.text = category.title
-        categoryImage.setImageResource(resourceId)
-        println("Resource ID:  $resourceId")
+        holder.categoryName?.text = category.title
+        holder.categoryImage?.setImageResource(resourceId)
 
         return categoryView
     }
@@ -45,4 +59,9 @@ class CategoryAdapter(context: Context, categories: List<Category>): BaseAdapter
         return categories.count()
     }
 
+
+    private class ViewHolder {
+        var categoryImage: ImageView? = null
+        var categoryName: TextView? = null
+    }
 }
